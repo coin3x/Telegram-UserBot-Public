@@ -542,6 +542,14 @@ async def imdb(e):
      await e.edit("Plox enter **Valid movie name** kthx")
 
 
+@register(outgoing=True, pattern="^.f ")
+async def payf(e):
+    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+        paytext = e.text[3:]
+        pay = "{}\n{}\n{}\n{}\n{}\n{}\n{}".format(paytext*6, paytext,paytext, paytext*5, paytext, paytext, paytext)
+        await e.edit(pay)
+
+
 CMD_HELP.update({
     'img': ".img <search_query>\
     \nUsage: Does an image search on Google and shows two images."
