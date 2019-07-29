@@ -12,7 +12,10 @@ import random
 import re
 import time
 
+from userbot import bot
 from cowpy import cow
+from collections import deque
+from telethon import events, functions, types
 
 from userbot import CMD_HELP, ZALG_LIST
 from userbot.events import register
@@ -238,10 +241,10 @@ RUNSREACTS = [
     "Runs far, far away from earth",
     "Running faster than usian bolt coz I'mma Bot",
     "Runs to Marie",
-    "This Group is too cancerous to deal with.",
+    "Bhago Bc Chakka Aaya.",
     "Cya bois",
     "Kys",
-    "I am a mad person. Plox Ban me.",
+    "Runs to Modi.",
     "I go away",
     "I am just walking off, coz me is too fat.",
     "I Fugged off!",
@@ -568,6 +571,65 @@ async def bluetext(bt_e):
                 "`BLUETEXT MUST CLICK.`\n"
                 "`Are you a stupid animal which is attracted to colours?`"
             )
+
+
+@register(outgoing=True, pattern="^.cry$")
+async def cry(e):
+    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+        await e.edit("(;´༎ຶД༎ຶ)")
+
+
+@register(outgoing=True, pattern="^.fp$")
+async def facepalm(e):
+    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+        await e.edit("🤦‍♂")
+
+
+@register(outgoing=True, pattern="^.clock$")
+async def _(event):
+    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+	    if event.fwd_from:
+		    return
+	    deq = deque(list("🕙🕘🕗🕖🕕🕔🕓🕒🕑🕐🕛"))
+	    for _ in range(32):
+		    await asyncio.sleep(0.1)
+		    await event.edit("".join(deq))
+		    deq.rotate(1)
+
+
+@register(outgoing=True, pattern="^.moon$")
+async def _(event):
+    if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
+	    if event.fwd_from:
+		    return
+	    deq = deque(list("🌗🌘🌑🌒🌓🌔🌕🌖"))
+	    for _ in range(32):
+		    await asyncio.sleep(0.1)
+		    await event.edit("".join(deq))
+		    deq.rotate(1)
+
+
+@register(outgoing=True, pattern="^.myusernames$")
+async def _(event):
+    if event.fwd_from:
+        return
+    result = await bot(functions.channels.GetAdminedPublicChannelsRequest())
+    output_str = ""
+    for channel_obj in result.chats:
+        output_str += f"- {channel_obj.title} @{channel_obj.username} \n"
+    await event.edit(output_str)
+
+
+@register(outgoing=True, pattern="^.poco$")
+async def poco(e):
+    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+        await e.edit("[Join The EvolutionX Group For Poco F1](https://t.me/EvoXPoco)")
+
+
+@register(outgoing=True, pattern="^.channel$")
+async def channel(e):
+    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+        await e.edit("[Join This Channel For More Info About Reignz Updates](https://t.me/reignzupdate)")
 
 
 @register(pattern='.type(?: |$)(.*)')
