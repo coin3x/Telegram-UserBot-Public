@@ -6,11 +6,12 @@
 
 """ Userbot module containing various scrapers. """
 
-import os
+import os, shutil, bs4, re
 from asyncio import create_subprocess_shell as asyncsh
 from asyncio.subprocess import PIPE as asyncsh_PIPE
 from html import unescape
 from re import findall
+from datetime import datetime
 from urllib import parse
 from urllib.error import HTTPError
 
@@ -65,6 +66,34 @@ async def img_sampler(event):
         os.remove(lst[1])
         os.rmdir(os.path.dirname(os.path.abspath(lst[0])))
         await event.delete()
+
+
+@register(outgoing=True, pattern="^.currency (.*)")
+async def _(event):
+    if event.fwd_from:
+        return
+    start = datetime.now()
+    input_str = event.pattern_match.group(1)
+    input_sgra = input_str.split(" ")
+    if len(input_sgra) == 3:
+        try:
+            number = float(input_sgra[0])
+            currency_from = input_sgra[1].upper()
+            currency_to = input_sgra[2].upper()
+            request_url = "https://api.exchangeratesapi.io/latest?base={}".format(currency_from)
+            current_response = get(request_url).json()
+            if currency_to in current_response["rates"]:
+                current_rate = float(current_response["rates"][currency_to])
+                rebmun = round(number * current_rate, 2)
+                await event.edit("{} {} = {} {}".format(number, currency_from, rebmun, currency_to))
+            else:
+                await event.edit("IDEKNOWTDWTT")
+        except e:
+            await event.edit(str(e))
+    else:
+        await event.edit("`.currency number from to`")
+    end = datetime.now()
+    ms = (end - start).seconds
 
 
 @register(outgoing=True, pattern=r"^.google (.*)")
@@ -431,9 +460,95 @@ def deEmojify(inputString):
     return get_emoji_regexp().sub(u'', inputString)
 
 
+#kanged from Blank-x ;---;
+@register(outgoing=True, pattern="^.imdb (.*)")
+async def imdb(e):
+ try:
+    movie_name = e.pattern_match.group(1)
+    remove_space = movie_name.split(' ')
+    final_name = '+'.join(remove_space)
+    page = get("https://www.imdb.com/find?ref_=nv_sr_fn&q="+final_name+"&s=all")
+    lnk = str(page.status_code)
+    soup = bs4.BeautifulSoup(page.content,'lxml')
+    odds = soup.findAll("tr","odd")
+    mov_title = odds[0].findNext('td').findNext('td').text
+    mov_link = "http://www.imdb.com/"+odds[0].findNext('td').findNext('td').a['href']
+    page1 = get(mov_link)
+    soup = bs4.BeautifulSoup(page1.content,'lxml')
+    if soup.find('div','poster'):
+    	poster = soup.find('div','poster').img['src']
+    else:
+    	poster = ''
+    if soup.find('div','title_wrapper'):
+    	pg = soup.find('div','title_wrapper').findNext('div').text
+    	mov_details = re.sub(r'\s+',' ',pg)
+    else:
+    	mov_details = ''
+    credits = soup.findAll('div', 'credit_summary_item')
+    if len(credits)==1:
+    	director = credits[0].a.text
+    	writer = 'Not available'
+    	stars = 'Not available'
+    elif len(credits)>2:
+    	director = credits[0].a.text
+    	writer = credits[1].a.text
+    	actors = []
+    	for x in credits[2].findAll('a'):
+    		actors.append(x.text)
+    	actors.pop()
+    	stars = actors[0]+','+actors[1]+','+actors[2]
+    else:
+    	director = credits[0].a.text
+    	writer = 'Not available'
+    	actors = []
+    	for x in credits[1].findAll('a'):
+    		actors.append(x.text)
+    	actors.pop()
+    	stars = actors[0]+','+actors[1]+','+actors[2]
+    if soup.find('div', "inline canwrap"):
+    	story_line = soup.find('div', "inline canwrap").findAll('p')[0].text
+    else:
+    	story_line = 'Not available'
+    info = soup.findAll('div', "txt-block")
+    if info:
+    	mov_country = []
+    	mov_language = []
+    	for node in info:
+    		a = node.findAll('a')
+    		for i in a:
+    			if "country_of_origin" in i['href']:
+    				mov_country.append(i.text)
+    			elif "primary_language" in i['href']:
+    				mov_language.append(i.text)
+    if soup.findAll('div',"ratingValue"):
+    	for r in soup.findAll('div',"ratingValue"):
+    		mov_rating = r.strong['title']
+    else:
+    	mov_rating = 'Not available'
+    await e.edit('<a href='+poster+'>&#8203;</a>'
+    			'<b>Title : </b><code>'+mov_title+
+    			'</code>\n<code>'+mov_details+
+    			'</code>\n<b>Rating : </b><code>'+mov_rating+
+    			'</code>\n<b>Country : </b><code>'+mov_country[0]+
+    			'</code>\n<b>Language : </b><code>'+mov_language[0]+
+    			'</code>\n<b>Director : </b><code>'+director+
+    			'</code>\n<b>Writer : </b><code>'+writer+
+    			'</code>\n<b>Stars : </b><code>'+stars+
+    			'</code>\n<b>IMDB Url : </b>'+mov_link+
+    			'\n<b>Story Line : </b>'+story_line,
+    			link_preview = True , parse_mode = 'HTML'
+    			)
+ except IndexError:
+     await e.edit("Plox enter **Valid movie name** kthx")
+
+
 CMD_HELP.update({
     'img': ".img <search_query>\
     \nUsage: Does an image search on Google and shows two images."
+})
+CMD_HELP.update({
+    'currency': ".currency <amount> <from> <to>\
+    \nUsage: Converts various currencies for you."
 })
 CMD_HELP.update({
     'google': ".google <search_query>\
@@ -469,4 +584,8 @@ CMD_HELP.update({
     \nUsage: Download videos from YouTube. \
 If no quality is specified, the highest downloadable quality is downloaded. \
 Will send the link if the video is larger than 50 MB."
+})
+CMD_HELP.update({
+    'imdb': ".imdb <movie-name>\
+    \nUsage: Shows movie info and other stuffs."
 })
