@@ -39,7 +39,7 @@ async def upstream(ups):
             "/", "#", "@", "!"):
         await ups.edit("`Checking for updates, please wait....`")
         conf = ups.pattern_match.group(1)
-        off_repo = 'https://github.com/RaphielGang/Telegram-UserBot.git'
+        off_repo = 'https://github.com/PainKiller3/Telegram-UserBot.git'
 
         try:
             txt = "`Oops.. Updater cannot continue due to some problems occured`\n\n**LOGTRACE:**\n"
