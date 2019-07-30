@@ -42,6 +42,52 @@ If you need help writing a new module, you can checkout the [Wiki](https://wiki.
 Please target your PRs to the staging branch and not master. Commits on `master` wont be done by a user.
 
 
+### If You Are Deploying Manually In Heroku Then Dont Forget To Add This In Setting Of Your App
+-> heroku stack:set container -a APPNAME (Do this in heroku cli oterwise mongo db will show failed)
+
+-> https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest
+
+-> heroku/python
+
+-> heroku-community/apt
+
+-> https://github.com/heroku/heroku-buildpack-chromedriver
+
+-> https://github.com/heroku/heroku-buildpack-google-chrome
+
+-> https://github.com/amivin/aria2-heroku.git
+
+-> https://github.com/opendoor-labs/heroku-buildpack-p7zip
+
+
+### Instruction For Gdrive Module
+Usage:
+.mirror [in reply to TG file] or .mirror <link> | <filename>
+
+Note: User needs to do the following:
+
+Set up OAuth
+- Visit the Google Cloud Console
+- Go to the OAuth Consent tab, fill it, and save.
+- Go to the Credentials tab and click Create Credentials -> OAuth Client ID
+- Choose Other and Create.
+- Use the download button to download your credentials.
+- Move that file to the root of pydrive-client, and rename it to client_secrets.json
+
+Enable the Drive API
+- Visit the Google API Library page.
+- Search for Drive.
+- Make sure that it's enabled. Enable it if not.
+
+Authenticating
+- Run generate_drive_session.py to be prompted to follow an OAuth URL that will take you to the Google Drive login page, and then give you a code to paste on the terminal. Once that's done, these credentials will be cached and you will not be prompted again.
+
+Updating config
+- Once, you finished everything as above, open your config.env and add the following line:
+- GDRIVE_FOLDER=""
+- Where value is an ID of a folder on your Drive like "1n4XS6IZCPY6urGKu6JM4K9VS1fo21s_l"
+
+
 ### Credits:
 
 I would like to thank people who assisted me throughout this project:
