@@ -72,6 +72,21 @@ async def repo_is_here(wannasee):
         await wannasee.edit("[Click Here To Get The Link Of My Userbot Repo](https://github.com/PainKiller3/Telegram-UserBot/)")
 
 
+@register(outgoing=True, pattern="^.evox$")
+async def evox_poco(wannasee):
+    """ For .evox command, just returns the evox poco download link. """
+    if not wannasee.text[0].isalpha(
+    ) and wannasee.text[0] not in ("/", "#", "@", "!"):
+        await wannasee.edit(
+		"📲 EvolutionX for POCO F1 (beryllium).\n"
+		"👤 by [Ninad Patil (REIGNZ)](@REIGNZ3)\n"
+		"ℹ️ Version: Pie\n"
+		"⬇️ [Download now](https://sourceforge.net/projects/evolution-x/files/beryllium/)\n"
+		"📱 [XDA Thread](https://forum.xda-developers.com/poco-f1/development/rom-evolution-x-t3923023/amp/)\n"
+		"#beryllium #KeepEvolving"
+		)
+
+
 CMD_HELP.update({
     'random': '.random <item1> <item2> ... <itemN>\
 \nUsage: Get a random item from the list of items.'
@@ -96,4 +111,9 @@ CMD_HELP.update({
 CMD_HELP.update({
     'repo': '.repo\
 \nUsage: If you are curious what makes Paperplane work, this is what you need.'
+})
+
+CMD_HELP.update({
+    'evox': '.evox\
+\nUsage: Send the link of EvolutionX Rom For Poco F1 xD.'
 })
