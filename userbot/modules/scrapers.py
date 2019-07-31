@@ -7,11 +7,14 @@
 """ Userbot module containing various scrapers. """
 
 import os, shutil, bs4, re
+from time import sleep
 from asyncio import create_subprocess_shell as asyncsh
 from asyncio.subprocess import PIPE as asyncsh_PIPE
 from html import unescape
 from re import findall
 from datetime import datetime
+from selenium import webdriver
+from urllib.parse import quote_plus
 from urllib import parse
 from urllib.error import HTTPError
 
@@ -27,11 +30,78 @@ from requests import get
 from urbandict import define
 from wikipedia import summary
 from wikipedia.exceptions import DisambiguationError, PageError
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options
 
-from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, bot
+from userbot import CMD_HELP, BOTLOG, BOTLOG_CHATID, YOUTUBE_API_KEY, bot, CHROME_DRIVER, GOOGLE_CHROME_BIN
 from userbot.events import register
 
+CARBONLANG = "auto"
 LANG = "en"
+
+
+@register(outgoing=True, pattern="^.crblang")
+async def setlang(prog):
+    if not prog.text[0].isalpha() and prog.text[0] not in ("/", "#", "@", "!"):
+        global CARBONLANG
+        CARBONLANG = prog.text.split()[1]
+        await prog.edit(f"language set to {CARBONLANG}")
+
+@register(outgoing=True, pattern="^.carbon")
+async def carbon_api(e):
+ if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
+   """ A Wrapper for carbon.now.sh """
+   await e.edit("Processing...")
+   CARBON = 'https://carbon.now.sh/?l={lang}&code={code}'
+   global CARBONLANG
+   textx = await e.get_reply_message()
+   pcode = e.text
+   if pcode[8:]:
+         pcode = str(pcode[8:])
+   elif textx:
+         pcode = str(textx.message) # Importing message to module
+   code = quote_plus(pcode) # Converting to urlencoded 
+   url = CARBON.format(code=code, lang=CARBONLANG)
+   chrome_options = Options()
+   chrome_options.add_argument("--headless")
+   chrome_options.binary_location = GOOGLE_CHROME_BIN
+   chrome_options.add_argument("--window-size=1920x1080")
+   chrome_options.add_argument("--disable-dev-shm-usage")
+   chrome_options.add_argument("--no-sandbox")
+   chrome_options.add_argument('--disable-gpu')
+   prefs = {'download.default_directory' : './'}
+   chrome_options.add_experimental_option('prefs', prefs)
+   await e.edit("Processing 30%")
+
+   driver = webdriver.Chrome(executable_path=CHROME_DRIVER, options=chrome_options)
+   driver.get(url)
+   download_path = './'
+   driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
+   params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
+   command_result = driver.execute("send_command", params)
+
+   driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
+   sleep(5) # this might take a bit.
+   driver.find_element_by_xpath("//button[contains(text(),'4x')]").click()
+   sleep(5)
+   await e.edit("Processing 50%")
+   driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
+   sleep(5) #Waiting for downloading
+
+   await e.edit("Processing 90%")
+   file = './carbon.png'
+   await e.edit("Done!!")
+   await e.client.send_file(
+         e.chat_id,
+         file,
+         caption="Made using [Carbon](https://carbon.now.sh/about/), a project by [Dawn Labs](https://dawnlabs.io/)",
+         force_document=True,
+         reply_to=e.message.reply_to_msg_id,
+         )
+
+   os.remove('./carbon.png')
+   # Removing carbon.png after uploading
+   await e.delete() # Deleting msg
 
 
 @register(outgoing=True, pattern="^.img (.*)")
@@ -550,6 +620,10 @@ async def payf(e):
         await e.edit(pay)
 
 
+CMD_HELP.update({
+    'carbon': ".carbon <text> [or reply]\
+    \nUsage: Beautify your code using carbon.now.sh\nUse .crblang <text> to set language for your code."
+})
 CMD_HELP.update({
     'img': ".img <search_query>\
     \nUsage: Does an image search on Google and shows two images."

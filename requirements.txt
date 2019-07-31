@@ -32,3 +32,4 @@ pyDownload
 PyDrive
 psutil
 bs4
+async_generator

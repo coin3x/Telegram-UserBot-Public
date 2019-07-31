@@ -41,6 +41,8 @@ RUN apk add --no-cache --update \
     pv \
     jq \
     wget \
+    chromium \
+    chromium-chromedriver \
     bash
 
 RUN pip3 install --upgrade pip setuptools

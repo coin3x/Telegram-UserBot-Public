@@ -67,6 +67,10 @@ CONSOLE_LOGGER_VERBOSE = sb(
 
 MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
 
+CHROME_DRIVER = os.environ.get("CHROME_DRIVER", None)
+
+GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
+
 SCREENSHOT_LAYER_ACCESS_KEY = os.environ.get(
     "SCREENSHOT_LAYER_ACCESS_KEY", None
 )
