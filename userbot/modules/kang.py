@@ -57,7 +57,7 @@ async def kang(args):
         if photo:
             splat = args.text.split()
             if not emojibypass:
-                emoji = "🤔"
+                emoji = "🤯"
             pack = "1"
             if len(splat) == 3:
                 pack = splat[2]  # User sent both
@@ -72,8 +72,8 @@ async def kang(args):
                     # pack
                     emoji = splat[1]
 
-            packname = f"a{user.id}_by_{user.username}_{pack}"
-            packnick = f"@{user.username}'s userbot pack {pack}"
+            packname = f"hugwalk_kangs"
+            packnick = f"Oh god oh fuck Hugwalk is kanging again please send help"
             cmd = '/newpack'
             file = io.BytesIO()
 
