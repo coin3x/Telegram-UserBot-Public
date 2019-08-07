@@ -395,12 +395,13 @@ async def zal(zgfy):
 
         await zgfy.edit("".join(reply_text))
 
-
+# i don't wanna greet anyone
+"""
 @register(outgoing=True, pattern="^hi$")
 async def hoi(hello):
     """ Greet everyone! """
     await hello.edit("Hoi!😄")
-
+"""
 
 @register(outgoing=True, pattern="^.owo(?: |$)(.*)")
 async def faces(owo):
@@ -436,7 +437,7 @@ async def react_meme(react):
         await react.edit(reply_text)
 
 
-@register(outgoing=True, pattern="^.shg$")
+@register(outgoing=True, pattern="^.shrug$")
 async def shrugger(shg):
     r""" ¯\_(ツ)_/¯ """
     if not shg.text[0].isalpha() and shg.text[0] not in ("/", "#", "@", "!"):
