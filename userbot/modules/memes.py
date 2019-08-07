@@ -254,7 +254,7 @@ async def univsaye(cowmsg):
 """
 @register(outgoing=True, pattern="^:/$")
 async def kek(keks):
-    """ Check yourself ;)"""
+    # Check yourself ;)
     uio = ["/", "\\"]
     for i in range(1, 15):
         time.sleep(0.3)
@@ -263,7 +263,7 @@ async def kek(keks):
 
 @register(outgoing=True, pattern="^-_-$")
 async def lol(lel):
-    """ Ok... """
+    # Ok...
     okay = "-_-"
     for _ in range(10):
         okay = okay[:-1] + "_-"
@@ -272,7 +272,7 @@ async def lol(lel):
 
 @register(outgoing=True, pattern="^.cp(?: |$)(.*)")
 async def copypasta(cp_e):
-    """ Copypasta the famous meme """
+    # Copypasta the famous meme
     if not cp_e.text[0].isalpha() and cp_e.text[0] not in ("/", "#", "@", "!"):
         textx = await cp_e.get_reply_message()
         message = cp_e.pattern_match.group(1)
@@ -399,7 +399,7 @@ async def zal(zgfy):
 """
 @register(outgoing=True, pattern="^hi$")
 async def hoi(hello):
-    """ Greet everyone! """
+    # Greet everyone!
     await hello.edit("Hoi!😄")
 """
 
@@ -454,7 +454,7 @@ async def insult(e):
 """
 @register(outgoing=True, pattern="^.abuse$")
 async def abuse(e):
-    """ Galli Dunga Bdske !! """
+    #Galli Dunga Bdske !!
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit(random.choice(ABUSESREACTS))
 """
