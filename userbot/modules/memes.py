@@ -211,40 +211,18 @@ INSULT_STRINGS = [
     "If you’re talking behind my back then you’re in a perfect position to kiss my a**!.",
 ]
 ABUSESREACTS = [
-    "Madarchod",
-    "Bhosdike",
     "Ur mum gey",
     "Ur dad trans",
-    "Bsdk",
-    "Bsdkarchod",
-    "Mc",
     "Relax your Rear,ders nothing to fear,The Rape train is finally here",
-    "Stfu bc",
     "Stfu and Gtfo U nub",
-    "GTFO bsdk"
-    "CUnt",
-    "Chodu",
-    "Gaandu",
-    "Tatti",
-    "Kamina",
-    "Chunni",
-    "Chinaal",
-    "Lund",
-    "Hijra",
-    "Randi",
-	"Betichod madarjaat bhen ke lode",
-	"Nikal Laude! Pehli fursat me nikal",
-	"Oof Bhai Madarchod"
 ]
 RUNSREACTS = [
     "Runs to Thanos",
     "Runs far, far away from earth",
     "Running faster than usian bolt coz I'mma Bot",
     "Runs to Marie",
-    "Bhago Bc Chakka Aaya.",
     "Cya bois",
     "Kys",
-    "Runs to Modi.",
     "I go away",
     "I am just walking off, coz me is too fat.",
     "I Fugged off!",
@@ -272,7 +250,8 @@ async def univsaye(cowmsg):
 
         await cowmsg.edit(f"`{cheese.milk(text).replace('`', '´')}`")
 
-
+# remove unused memes
+"""
 @register(outgoing=True, pattern="^:/$")
 async def kek(keks):
     """ Check yourself ;)"""
@@ -324,7 +303,7 @@ async def copypasta(cp_e):
                     reply_text += owo.lower()
         reply_text += random.choice(EMOJIS)
         await cp_e.edit(reply_text)
-
+"""
 
 @register(outgoing=True, pattern="^.vapor(?: |$)(.*)")
 async def vapor(vpr):
@@ -470,13 +449,14 @@ async def insult(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit(random.choice(INSULT_STRINGS))
 
-
+# sorry i don't speak curry
+"""
 @register(outgoing=True, pattern="^.abuse$")
 async def abuse(e):
     """ Galli Dunga Bdske !! """
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit(random.choice(ABUSESREACTS))
-
+"""
 
 @register(outgoing=True, pattern="^.runs$")
 async def runner_lol(run):
@@ -584,7 +564,8 @@ async def facepalm(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         await e.edit("🤦‍♂")
 
-
+# ugh
+"""
 @register(outgoing=True, pattern="^.clock$")
 async def _(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
@@ -607,7 +588,7 @@ async def _(event):
 		    await asyncio.sleep(0.1)
 		    await event.edit("".join(deq))
 		    deq.rotate(1)
-
+"""
 
 @register(outgoing=True, pattern="^.myusernames$")
 async def _(event):
@@ -623,13 +604,13 @@ async def _(event):
 @register(outgoing=True, pattern="^.poco$")
 async def poco(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("[Join The EvolutionX Group For Poco F1](https://t.me/EvoXPoco)")
+        await e.edit("[Join the Evolution X Group For Pocophone F1](https://t.me/EvoXPoco)")
 
 
 @register(outgoing=True, pattern="^.channel$")
 async def channel(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("[Join This Channel For More Info About Reignz Updates](https://t.me/reignzupdate)")
+        await e.edit("[Join my channel for more design and complaints](https://t.me/ShenComplaints)")
 
 
 @register(pattern='.type(?: |$)(.*)')
