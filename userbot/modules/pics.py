@@ -2,12 +2,15 @@ from io import BytesIO
 from userbot.events import register
 from userbot import CMD_HELP
 from telethon import types
+from asyncio import sleep
 from telethon.errors import PhotoInvalidDimensionsError
 from telethon.tl.functions.messages import SendMediaRequest
 
 
-@register(outgoing=True, pattern="^.pic(?: |$)(.*)")
+@register(outgoing=True, pattern="^\.pic(?: |$)(.*)")
 async def on_file_to_photo(pics):
+    await pics.edit("Converting Document image to Full Size Image\nPlease wait...")
+    await sleep(2.5)
     await pics.delete()
     target = await pics.get_reply_message()
     try:
