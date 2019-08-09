@@ -86,12 +86,14 @@ async def kang(args):
                 packnick += " animated"
                 cmd = '/newanimated'
 
+            await args.edit("Detecting pack existence")
             response = urllib.request.urlopen(
                 urllib.request.Request(f'http://t.me/addstickers/{packname}')
             )
             htmlstr = response.read().decode("utf8").split('\n')
 
             if "  A <strong>Telegram</strong> user has created the <strong>Sticker&nbsp;Set</strong>." not in htmlstr:
+                await args.edit("Adding sticker to pack")
                 async with bot.conversation('Stickers') as conv:
                     await conv.send_message('/addsticker')
                     await conv.get_response()
